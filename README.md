@@ -19,7 +19,7 @@ Note we will also create a new drop down menu called: "*Discount Request*"
 
 ![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/sheet.png)
 
-At the same spreadsheet, navigate to column **Z** and create the e-mail settings just like figure below:
+At the same spreadsheet, navigate to column **AA** and create the e-mail settings just like figure below:
 
 ![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/email_setup.png)
 
