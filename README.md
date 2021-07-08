@@ -36,7 +36,7 @@ Copy and paste the script `code.gs` of this repository to your `code.gs` file.
 
 ### How the script works
 
-The first part of the script we will create a menu in the spreadsheet:
+In the first part of the script, we will create a menu in the spreadsheet:
 
 ```
 //=====================================
@@ -56,14 +56,14 @@ function about(){
 
 ```
 
-Then we need to create variables to store the components of a traditional e-mail, like:
+Then, we need to create variables to store the components of a traditional e-mail, like:
   - To
   - Cc
   - Subject
   - Body
   - Signature
 
-All those variables will be fetched from the spreadsheet and can carry any value you may need.
+All those values will be fetched from the spreadsheet and could carry any value you may need.
 
 ```
 //=====================================
@@ -90,8 +90,8 @@ function send_discount_email() {
 
 ```
 
-I know it is a nightmare to work with dates in JavaScript.  
-Hope this line ease your pain.
+I know it is a nightmare to work with *dates* in JavaScript.  
+Hope these lines will ease your pain.
 
 ```
 var ts = new Date().toLocaleString(undefined, {
@@ -104,7 +104,7 @@ var ts = new Date().toLocaleString(undefined, {
 }
 ```
 
-Since we may have more than one carbon copy recipients we need to test the existing of all 3 possibilities:  
+Since we may have more than one carbon copy recipients, we need to test the existing of all 3 possibilities:  
 *If you know a better way to do this, let me know in the comments* :)
 
 ```
@@ -155,14 +155,14 @@ Fetching the others important variables:
 
 ```
 
-Now comes the best part, actually send off the email:  
+Now, comes the best part, actually send off the email:  
 We will use the htmlBody option in this script.
 
 ```
    MailApp.sendEmail({
     to: to,
     cc: cc_list,
-    subject: subject + ": " + student,
+    subject: subject + " " + student,
     htmlBody: "<img src='https://cdn.pixabay.com/photo/2017/05/23/19/42/seal-2338306__480.png' alt='E-mail' style='width:130px;height:60px;'>" + 
      "<br>" +
      body1 + "<br>" + 
@@ -187,31 +187,34 @@ We will use the htmlBody option in this script.
 See Google documentation about send email
 [Class MailApp](https://developers.google.com/apps-script/reference/mail/mail-app)
 
-And at the last part, we would like to have a time stamp signature of the email sent.  
+And at the last part, we would like to have a timestamp signature of the email sent.  
 Here is how to do it.
 
 ```
   //MailApp.sendEmail(emailAddress, subject, message);
-  sheet.getRange(row, 8).setValue("Sent: " + ts).setFontColor('red'); // I2
+  sheet.getRange(row, 8).setValue("Sent: " + ts).setFontColor('red'); // H
   // Make sure the cell is updated right away in case the script is interrupted
   SpreadsheetApp.flush();
 }
 ```
 ### How to send and e-mail
 
-After filling out the columns **A** until **G**, type the row number of the corresponding student name with the approved discount, at cell **K1**.
+After filling out the columns **A** until **G**, type the row number of the corresponding student name with the approved discount, at cell **K1**.  
+Go to menu *Discount Request* and choose *Send e-mail* option.
 
 ![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/send_email.png)
 
-*The first time you run this script, you will need to allow the script to access your spreadsheet.
+*The first time you run this script, you will need to allow the script to access your spreadsheet.*
 
 ### Final notes:
-It is possible to use Google spreadsheets to send standardized emails. 
-You could also insert conditionals to send automaticaly emails case some conditions are met.
+This is what I learned using Google scripts.  
+It is possible to use Google spreadsheets to send standardized emails for enhanced communication.  
+You could also insert a logic to send automatically e-mails, case some conditions are met.
 
-Hope this script helps you in your work.
+Hope this script helps you at work.
+
+Let me know your comments.
 
 Best regards,
 
-Eduardo Lima
-[LinkedIn](https://www.linkedin.com/in/eduardo1lima/)
+[Eduardo Lima](https://www.linkedin.com/in/eduardo1lima/)
