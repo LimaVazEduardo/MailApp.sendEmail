@@ -28,7 +28,7 @@ Go to menu *Tools* and choose *Script editor*
 ![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/script_editor.png)
 
 You will see a screen like this one:  
-Give the project a name: *Discount_request_email*
+Give the project a name: 
 
 ![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/script.png)
 
