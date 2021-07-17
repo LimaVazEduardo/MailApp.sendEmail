@@ -80,8 +80,8 @@ Then, we need to create variables to access the components of both tabs, *Send_m
 // Main script
 //=====================================
 function send_discount_email() {
-  var ss = SpreadsheetApp.getActive();
-  var sheet = ss.getSheetByName('Send_mail');
+  var ss       = SpreadsheetApp.getActive();
+  var sheet    = ss.getSheetByName('Send_mail');
   var settings = ss.getSheetByName('Settings');
 
 ```
@@ -96,9 +96,9 @@ Hope these lines will ease your pain.
 
 ```
 var ts = new Date().toLocaleString(undefined, {
-    day:   'numeric',
-    month: 'short',
-    year:  'numeric',
+    day:    'numeric',
+    month:  'short',
+    year:   'numeric',
     hour:   '2-digit',
     minute: '2-digit',
     second: '2-digit',
@@ -150,10 +150,10 @@ Fetching email values from tab "Settings":
   var to = settings.getRange('B1').getValue();
   var cc = settings.getRange('B2').getValue();
     
-  var subject = settings.getRange('B3').getValue();
-  var body1 = settings.getRange('B4').getValue();
-  var body2 = settings.getRange('B5').getValue();
-  var body3 = settings.getRange('B6').getValue();
+  var subject    = settings.getRange('B3').getValue();
+  var body1      = settings.getRange('B4').getValue();
+  var body2      = settings.getRange('B5').getValue();
+  var body3      = settings.getRange('B6').getValue();
   var signature1 = settings.getRange('B7').getValue();
   var signature2 = settings.getRange('B8').getValue();
   
@@ -163,13 +163,13 @@ Fetching email values from tab "Settings":
 Fetching student details:
 
 ```
- var student = sheet.getRange(row, 1).getValue(); //A2
- var parent =  sheet.getRange(row, 2).getValue(); //B2
- var grade =  sheet.getRange(row, 3).getValue(); //C2
- var percent =  sheet.getRange(row, 4).getValue(); //D2
- var installment =  sheet.getRange(row, 5).getValue(); //E2
- var school_supplies =  sheet.getRange(row, 6).getValue(); //F2
- var total_amount =  sheet.getRange(row, 7).getValue(); //G2
+ var student         = sheet.getRange(row, 1).getValue(); //A2
+ var parent          = sheet.getRange(row, 2).getValue(); //B2
+ var grade           = sheet.getRange(row, 3).getValue(); //C2
+ var percent         = sheet.getRange(row, 4).getValue(); //D2
+ var installment     = sheet.getRange(row, 5).getValue(); //E2
+ var school_supplies = sheet.getRange(row, 6).getValue(); //F2
+ var total_amount    = sheet.getRange(row, 7).getValue(); //G2
  console.log("cc: ", cc);
  
 ```
