@@ -18,9 +18,11 @@ You could use a spreadsheet to create a standard output mail like the one below,
 First let's set up a new spreadsheet just like the one below:  
 Note we will also create a new drop down menu called: "*Discount Request*"
 
-![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/sheet.png)
+![sheet](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/sheet.png)
 
-At the same spreadsheet, create a new tab and call it "Settings":  
+\
+\
+At the same spreadsheet, create a new tab and call it **Settings**:  
 Insert the following values in column A.
  - To:
  - Cc:   *you may separate e-mail addresses using "," commas*
@@ -31,16 +33,20 @@ Insert the following values in column A.
  - Signature1:
  - Signature2: 
 
-![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/email_setup.png)
+![email_setup](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/email_setup.png)
 
+\
+\
 Go to menu *Tools* and choose *Script editor*
 
-![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/script_editor.png)
+![script_editor](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/script_editor.png)
 
+\
+\
 You will see a screen like this one:  
 Give the project a name: **Discount_request_email**
 
-![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/script.png)
+![script](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/script.png)
 
 Copy and paste the script `code.gs` of this repository to your `code.gs` file.
 
@@ -65,10 +71,9 @@ function about(){
 }
 
 ```
-
-Then, we need to create variables to access the components of both tabs:
-  - Send_mail
-  - Settings
+\
+\
+Then, we need to create variables to access the components of both tabs, *Send_mail* and *Settings*:
 
 ```
 //=====================================
@@ -80,6 +85,11 @@ function send_discount_email() {
   var settings = ss.getSheetByName('Settings');
 
 ```
+![tabs](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/tabs.png)
+
+\
+\
+After sending the email, the script will log a timestamp in the spreadsheet to indicate the e-mail was sent.
 
 I know it is a nightmare to work with *dates* in JavaScript.  
 Hope these lines will ease your pain.
@@ -95,13 +105,15 @@ var ts = new Date().toLocaleString(undefined, {
 }
 ```
 
-At this part of the script I am checking which "checkbox" is marked as TRUE or FALSE.
-You may extend this check over the first 22 cells.
+\
+\
+At this part of the script, we are checking which *Checkbox* is marked as TRUE or FALSE.
+ - You may extend this check over the first 22 cells.
 
 If none of the checkboxes at column *I* are marked, a pop up window will alert you to select one student.
 If one checkboxe at column *I* is marked, the script will check if there is a student name assigned to column *A*.
-If not, a pop up window will alert you of an error.
-If yes, variable *row* will be assigned with the row number of the student you have selected.
+  If not, a pop up window will alert you of an error.
+  If yes, variable *row* will be assigned with the row number of the student you have selected.
 
 ```
 // Column I(9): Checkboxes
@@ -130,7 +142,8 @@ If yes, variable *row* will be assigned with the row number of the student you h
   console.log('row: ', row);
   } 
 ```
-
+\
+\
 Fetching email values from tab "Settings":
 
 ```
@@ -145,7 +158,8 @@ Fetching email values from tab "Settings":
   var signature2 = settings.getRange('B8').getValue();
   
 ```
-
+\
+\
 Fetching student details:
 
 ```
@@ -159,10 +173,11 @@ Fetching student details:
  console.log("cc: ", cc);
  
 ```
+\
+\
+In order to have the correct currency format for your country, we are going to set variable *myObj*.
 
-Country currency format will use variable *myObj*.
-
-See more details at: [W3Schools](https://www.w3schools.com/jsref/jsref_tolocalestring_number.asp)
+Example: `R$ 1.000,00`
 
 ```
   var myObj = {
@@ -171,7 +186,10 @@ See more details at: [W3Schools](https://www.w3schools.com/jsref/jsref_tolocales
   }
   
 ```
+See more details at: [W3Schools](https://www.w3schools.com/jsref/jsref_tolocalestring_number.asp)
 
+\
+\
 Now, comes the best part, actually send off the email:  
 We will use the htmlBody option in this script.
 
@@ -203,9 +221,13 @@ We will use the htmlBody option in this script.
   
 ```
 
+\
+\
 See Google documentation about send email
 [Class MailApp](https://developers.google.com/apps-script/reference/mail/mail-app)
 
+\
+\
 And at the last part, we would like to have a timestamp signature of the email sent.  
 Here is how to do it.
 
@@ -218,7 +240,9 @@ Here is how to do it.
 
 ```
 
-It is also a good idea to clear the checkbox so we avoid confusion for the user:
+\
+\
+Finally, it is a good idea to clear the checkbox so we avoid confusion for the user:
 
 ```
  // Clear Check Box of column I.
@@ -232,7 +256,7 @@ After filling out the columns **A** until **G**, with the student details, check
 
 Go to menu *Discount Request* and choose *Send e-mail* option.
 
-![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/send_email.png)
+![send_email](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/send_email.png)
 
 *The first time you run this script, you will need to allow the script to access your spreadsheet.*
 
@@ -241,7 +265,7 @@ Go to menu *Discount Request* and choose *Send e-mail* option.
 
 After sending the e-mail, a timestamp will be logged at column *H* and the checkbox will be cleared.
 
-![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/email_rachel.png)
+![email_rachel](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/email_rachel.png)
 
 
 
