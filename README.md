@@ -1,3 +1,4 @@
+Second version:  
 # MailApp.sendEmail
 Cool script to send e-mails from a Google Spreadsheet
 
@@ -19,7 +20,16 @@ Note we will also create a new drop down menu called: "*Discount Request*"
 
 ![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/sheet.png)
 
-At the same spreadsheet, navigate to column **AA** and create the e-mail settings just like figure below:
+At the same spreadsheet, create a new tab and call it "Settings":  
+Insert the following values in column A.
+ - To:
+ - Cc:   *you may separate e-mail addresses using "," commas*
+ - Subject:
+ - Body1:
+ - Body2:
+ - Body3:
+ - Signature1:
+ - Signature2: 
 
 ![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/email_setup.png)
 
@@ -28,7 +38,7 @@ Go to menu *Tools* and choose *Script editor*
 ![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/script_editor.png)
 
 You will see a screen like this one:  
-Give the project a name: 
+Give the project a name: **Discount_request_email**
 
 ![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/script.png)
 
@@ -56,14 +66,9 @@ function about(){
 
 ```
 
-Then, we need to create variables to store the components of a traditional e-mail, like:
-  - To
-  - Cc
-  - Subject
-  - Body
-  - Signature
-
-All those values will be fetched from the spreadsheet and could carry any value you may need.
+Then, we need to create variables to access the components of both tabs:
+  - Send_mail
+  - Settings
 
 ```
 //=====================================
@@ -72,21 +77,7 @@ All those values will be fetched from the spreadsheet and could carry any value 
 function send_discount_email() {
   var ss = SpreadsheetApp.getActive();
   var sheet = ss.getSheetByName('Send_mail');
-  var ts = new Date().toLocaleString(undefined, {
-    day:   'numeric',
-    month: 'short',
-    year:  'numeric',
-    hour:   '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-});
-  
-  var row = sheet.getRange(1, 11).getValue(); //L2
-  
-  var to  = sheet.getRange('AA1').getValue();
-  var cc1 = sheet.getRange('AA2').getValue();
-  var cc2 = sheet.getRange('AA3').getValue();
-  var cc3 = sheet.getRange('AA4').getValue();
+  var settings = ss.getSheetByName('Settings');
 
 ```
 
@@ -104,64 +95,90 @@ var ts = new Date().toLocaleString(undefined, {
 }
 ```
 
-Since we may have more than one carbon copy recipients, we need to test the existing of all 3 possibilities:  
-*If you know a better way to do this, let me know in the comments* :)
+At this part of the script I am checking which "checkbox" is marked as TRUE or FALSE.
+You may extend this check over the first 22 cells.
+
+If none of the checkboxes at column *I* are marked, a pop up window will alert you to select one student.
+If one checkboxe at column *I* is marked, the script will check if there is a student name assigned to column *A*.
+If not, a pop up window will alert you of an error.
+If yes, variable *row* will be assigned with the row number of the student you have selected.
 
 ```
-  // cc1 = T, cc2 = T, cc3 = T
-  if(cc1 != "" && cc2 != "" && cc3 != ""){
-    var cc_list = cc1 + "," + cc2 + "," + cc3;
-  }
-  // cc1 = T, cc2 = F, cc3 = T
-  if(cc1 != "" && cc2 == "" && cc3 != ""){
-    var cc_list = cc1 + "," + cc3;
-  }
-  // cc1 = T, cc2 = T, cc3 = F
-  if(cc1 != "" && cc2 != "" && cc3 == ""){
-    var cc_list = cc1 + "," + cc2;
-  }
-  // cc1 = F, cc2 = T, cc3 = T
-  if(cc1 == "" && cc2 != "" && cc3 != ""){
-    var cc_list = cc2 + "," + cc3;;
-  }
-  // cc1 = F, cc2 = F, cc3 = T
-  if(cc1 == "" && cc2 == "" && cc3 != ""){
-    var cc_list = cc3;
-  }
-  // cc1 = F, cc2 = F, cc3 = F
-  if(cc1 == "" && cc2 == "" && cc3 == ""){
-    var cc_list = "";
+// Column I(9): Checkboxes
+  for(var i = 2; i <= 22; i++){
+    // Checkbox is FALSE
+    if(sheet.getRange(i, 9).getValue() == false){ 
+      // Last FALSE Checkbox row #22
+      if(i == 22){
+        SpreadsheetApp.getUi().alert("Select 01 student on column 'I'");
+        return;
+      }
+    }
+    // Checkbox is TRUE
+    if((sheet.getRange(i, 9).getValue() == true)){  
+      // Check if column A is empty
+      if(sheet.getRange(i, 1).getValue() == ""){ 
+        SpreadsheetApp.getUi().alert("Error, row: " + i + " must not be empty");
+        // Clear Checkbox of column I.
+        sheet.getRange(i, 9).setValue(false);
+        return;
+      }
+       var row = i;
+       break;
+      } 
+  console.log('i: ', i);
+  console.log('row: ', row);
   } 
 ```
 
-Fetching the others important variables:
+Fetching email values from tab "Settings":
 
 ```
-  var subject = sheet.getRange('AA5').getValue();
-  var body1 = sheet.getRange('AA6').getValue();
-  var body2 = sheet.getRange('AA7').getValue();
-  var body3 = sheet.getRange('AA8').getValue();
-  var signature1 = sheet.getRange('AA9').getValue();
-  var signature2 = sheet.getRange('AA10').getValue();
+  var to = settings.getRange('B1').getValue();
+  var cc = settings.getRange('B2').getValue();
+    
+  var subject = settings.getRange('B3').getValue();
+  var body1 = settings.getRange('B4').getValue();
+  var body2 = settings.getRange('B5').getValue();
+  var body3 = settings.getRange('B6').getValue();
+  var signature1 = settings.getRange('B7').getValue();
+  var signature2 = settings.getRange('B8').getValue();
   
-  var student = sheet.getRange(row, 1).getValue(); //A2
-  var parent =  sheet.getRange(row, 2).getValue(); //B2
-  var grade =  sheet.getRange(row, 3).getValue(); //C2
-  var percent =  sheet.getRange(row, 4).getValue(); //D2
-  var installment =  sheet.getRange(row, 5).getValue(); //E2
-  var school_supplies =  sheet.getRange(row, 6).getValue(); //F2
-  var total_amount =  sheet.getRange(row, 7).getValue(); //G2
-  Logger.log("cc_list: ", cc_list);
+```
 
+Fetching student details:
+
+```
+ var student = sheet.getRange(row, 1).getValue(); //A2
+ var parent =  sheet.getRange(row, 2).getValue(); //B2
+ var grade =  sheet.getRange(row, 3).getValue(); //C2
+ var percent =  sheet.getRange(row, 4).getValue(); //D2
+ var installment =  sheet.getRange(row, 5).getValue(); //E2
+ var school_supplies =  sheet.getRange(row, 6).getValue(); //F2
+ var total_amount =  sheet.getRange(row, 7).getValue(); //G2
+ console.log("cc: ", cc);
+ 
+```
+
+Country currency format will use variable *myObj*.
+
+See more details at: [W3Schools](https://www.w3schools.com/jsref/jsref_tolocalestring_number.asp)
+
+```
+  var myObj = {
+    style: "currency",
+    currency: "BRL"
+  }
+  
 ```
 
 Now, comes the best part, actually send off the email:  
 We will use the htmlBody option in this script.
 
 ```
-   MailApp.sendEmail({
+ MailApp.sendEmail({
     to: to,
-    cc: cc_list,
+    cc: cc,
     subject: subject + " " + student,
     htmlBody: "<img src='https://cdn.pixabay.com/photo/2017/05/23/19/42/seal-2338306__480.png' alt='E-mail' style='width:130px;height:60px;'>" + 
      "<br>" +
@@ -174,16 +191,18 @@ We will use the htmlBody option in this script.
      body2 + " " + percent*100 + "%" + "<br>" + 
      body3 +  "<br>" + 
      "<pre><ul>" +
-     "Payment:    $ " + installment.toFixed(2)  + "<br>" +
-     "Materials:  $ " + school_supplies.toFixed(2) + "<br>" +
-     "Total:      $ " + total_amount.toFixed(2) + "<br>" +
+     "Payment:    " + installment.toLocaleString("pt-BR", myObj)  + "<br>" +
+     "Materials:  " + school_supplies.toLocaleString("pt-BR", myObj) + "<br>" +
+     "Total:      " + total_amount.toLocaleString("pt-BR", myObj) + "<br>" +
      "</ul></pre>" + 
      
      "<br>" + 
      "<b>" + signature1 + "</b>" +  "<br>" +
      "<i>" + signature2 + "</i>"
   });
+  
 ```
+
 See Google documentation about send email
 [Class MailApp](https://developers.google.com/apps-script/reference/mail/mail-app)
 
@@ -196,18 +215,38 @@ Here is how to do it.
   // Make sure the cell is updated right away in case the script is interrupted
   SpreadsheetApp.flush();
 }
+
 ```
+
+It is also a good idea to clear the checkbox so we avoid confusion for the user:
+
+```
+ // Clear Check Box of column I.
+  sheet.getRange(row, 9).setValue(false);
+
+```
+
 ### How to send and e-mail
 
-After filling out the columns **A** until **G**, type the row number of the corresponding student name with the approved discount, at cell **K1**.  
+After filling out the columns **A** until **G**, with the student details, check the corresponding Checkbox at column **I**.
+
 Go to menu *Discount Request* and choose *Send e-mail* option.
 
 ![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/send_email.png)
 
 *The first time you run this script, you will need to allow the script to access your spreadsheet.*
 
+
+### E-mail log
+
+After sending the e-mail, a timestamp will be logged at column *H* and the checkbox will be cleared.
+
+![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/email_rachel.png)
+
+
+
 ### Final notes:
-This is what I learned using Google scripts.  
+This is what I have learned using Google scripts.  
 It is possible to use Google spreadsheets to send standardized emails for enhanced communication.  
 You could also insert a logic to send automatically e-mails, case some conditions are met.
 
