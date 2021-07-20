@@ -7,6 +7,11 @@ function onOpen() {
   .addItem('Send e-mail', 'send_discount_email')
       .addItem('About', 'about')
       .addToUi();
+  //Insert 22 Checkboxes at column I (9)
+  for(var i = 2; i <= 22; i++){
+    var cb = SpreadsheetApp.getActive().getSheetByName('Send_mail');
+    cb.getRange(i,9).insertCheckboxes();
+  }
 }
 
 function about(){
