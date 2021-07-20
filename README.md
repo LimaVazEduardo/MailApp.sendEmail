@@ -52,7 +52,7 @@ Copy and paste the script `code.gs` of this repository to your `code.gs` file.
 
 ### How the script works
 
-In the first part of the script, we will create a menu in the spreadsheet:
+In the first part of the script, we will create a menu in the spreadsheet and also the checkboxes:
 
 ```
 //=====================================
@@ -64,6 +64,11 @@ function onOpen() {
   .addItem('Send e-mail', 'send_discount_email')
       .addItem('About', 'about')
       .addToUi();
+  //Insert 22 Checkboxes at column I (9)
+  for(var i = 2; i <= 22; i++){
+    var cb = SpreadsheetApp.getActive().getSheetByName('Send_mail');
+    cb.getRange(i,9).insertCheckboxes();
+  }
 }
 
 function about(){
