@@ -8,14 +8,22 @@ Here is a cool script to send standard emails using Google Spreadsheet.
 
 ### Problem to solve
 
-Let's say you work for a local school and frequently need to send e-mails to the account department, authorizing some discounts.
-You could use a spreadsheet to create a standard output mail like the one below, in your email system:
+Let's say you work for a local school and frequently need to send e-mails to the account department, 
+authorizing some discounts.  
+Every month you need to calculate a discount value and assembly an email to be sent to your organization 
+with student name, parent name and other pieces of information.   
+
+You also need to keep a log of all discounts approved.
+
+#### This is what you do every month
 
 ![mail body](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/mail_body.png)
 
 ### Suggested solution
 
-First let's set up a new spreadsheet just like the one below:  
+Create a simple system to send standardized emails to pre-difened addresses.
+
+First let's set up a new Google spreadsheet just like the one below:  
 Note we will also create a new drop down menu called: "*Discount Request*"
 
 ![sheet](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/sheet.png)
@@ -33,6 +41,10 @@ Insert the following values in column A.
  - Signature1:
  - Signature2: 
 
+`The cells Body1, Body2 and Body3 will help you to update the email body without having to edit the script.`
+
+\
+\
 ![email_setup](https://github.com/LimaVazEduardo/MailApp.sendEmail/blob/main/email_setup.png)
 
 \
